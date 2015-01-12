@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>Beetle Game</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/beetle.css">
+
+</head>
+<body>
+    <div id="content-container" class="container">
+    	<header class="page-header">
+    		<h1>
+    		<img id="app_logo" alt="logo" src="http://placehold.it/50x50">
+    		Beetle Game</h1>
+    		<nav id="nav">
+    		</nav>
+    	</header>
+   	
+
+   	<div id="dice_holder" class="container">
+   		<p class="text-center">
+	   		<button id="dice" class="btn btn-default btn-lg center">
+	   			<img src="http://placehold.it/50x50" alt="Dice Placeholder Image">
+	   		</button>
+   		</p>
+	</div>
+
+   	<div id="play" class="container row">
+	   	<div id="player1" class="col-md-6 player">
+	   		<div id="beetle1" class="row">
+	   			<div class="col-md-12 panel">
+		   			<canvas id="canvas1" height="200"></canvas>
+		   		</div>
+		   	</div>
+		</div>
+		<div id="player2" class="col-md-6 player">
+	   		<div id="beetle2" class="row">
+	   			<div class="col-md-12 panel">
+		   			<canvas id="canvas2" height="200"></canvas>
+		   		</div>
+		   	</div>
+		</div>
+	</div>
+
+	<div id="play-status" class="container row">
+		<div id="parts1" class="col-md-6 player">
+	   		<div class="col-md-6">
+	   			<div id="body1" class="thumbnail">
+	   				<label class="part-label">Body
+   						<img alt="roll 6" src="http://placehold.it/30x30">
+						<span class="status-counter">
+							<span class="part-count">0</span> / 1
+						</span>
+	   				</label>
+	   				<img alt="1 body" src="http://placehold.it/100x100>">
+	   			</div>
+	   			<div id="mouth1"class="thumbnail">
+	   				<label class="part-label">Mouth
+   						<img alt="roll x" src="http://placehold.it/30x30">
+						<span class="status-counter">
+							<span class="part-count">0</span> / 1
+						</span>
+	   				</label>
+	   				<img alt="1 mouth" src="http://placehold.it/100x100>">
+	   			</div>
+	   			<div id="eyes1" class="thumbnail">
+	   				<label class="part-label">Eyes
+   						<img alt="roll x" src="http://placehold.it/30x30">
+						<span class="status-counter">
+							<span class="part-count">0</span> / 2
+						</span>
+	   				</label>
+	   				<img alt="2 eyes" src="http://placehold.it/100x100>">
+	   			</div>
+	   		</div>
+	   		<div class="col-md-6">
+	   			<div id="head1" class="thumbnail">
+	   				<label class="part-label">Head
+   						<img alt="roll 1" src="http://placehold.it/30x30">
+						<span class="status-counter">
+							<span class="part-count">0</span> / 1
+						</span>
+	   				</label>
+	   				<img alt="1 head" src="http://placehold.it/100x100>">
+	   			</div>
+	   			<div id="antenna1" class="thumbnail">
+	   				<label class="part-label">Antennae
+   						<img alt="roll x" src="http://placehold.it/30x30">
+						<span class="status-counter">
+							<span class="part-count">0</span> / 2
+						</span>
+	   				</label>
+	   				<img alt="2 antennae" src="http://placehold.it/100x100>">
+	   			</div>
+	   			<div id="legs1" class="thumbnail">
+	   				<label class="part-label">Legs
+   						<img alt="roll x" src="http://placehold.it/30x30">
+						<span class="status-counter">
+							<span class="part-count">0</span> / 6
+						</span>
+	   				</label>
+	   				<img alt="6 legs" src="http://placehold.it/100x100>">
+	   			</div>
+	   		</div>
+	   	</div>
+	   	<div id="parts2" class="col-md-6 player">
+	   		<div class="col-md-6">
+	   			<div id="body2" class="thumbnail">
+	   				<label class="part-label">Body
+   						<img alt="roll 6" src="http://placehold.it/30x30">
+						<span class="status-counter">
+							<span class="part-count">0</span> / 1
+						</span>
+	   				</label>
+	   				<img alt="1 body" src="http://placehold.it/100x100>">
+	   			</div>
+	   			<div id="mouth2"class="thumbnail">
+	   				<label class="part-label">Mouth
+   						<img alt="roll x" src="http://placehold.it/30x30">
+						<span class="status-counter">
+							<span class="part-count">0</span> / 1
+						</span>
+	   				</label>
+	   				<img alt="1 mouth" src="http://placehold.it/100x100>">
+	   			</div>
+	   			<div id="eyes2" class="thumbnail">
+	   				<label class="part-label">Eyes
+   						<img alt="roll x" src="http://placehold.it/30x30">
+						<span class="status-counter">
+							<span class="part-count">0</span> / 2
+						</span>
+	   				</label>
+	   				<img alt="2 eyes" src="http://placehold.it/100x100>">
+	   			</div>
+	   		</div>
+	   		<div class="col-md-6">
+	   			<div id="head2" class="thumbnail">
+	   				<label class="part-label">Head
+   						<img alt="roll 1" src="http://placehold.it/30x30">
+						<span class="status-counter">
+							<span class="part-count">0</span> / 1
+						</span>
+	   				</label>
+	   				<img alt="1 head" src="http://placehold.it/100x100>">
+	   			</div>
+	   			<div id="antenna2" class="thumbnail">
+	   				<label class="part-label">Antennae
+   						<img alt="roll x" src="http://placehold.it/30x30">
+						<span class="status-counter">
+							<span class="part-count">0</span> / 2
+						</span>
+	   				</label>
+	   				<img alt="2 antennae" src="http://placehold.it/100x100>">
+	   			</div>
+	   			<div id="legs2" class="thumbnail">
+	   				<label class="part-label">Legs
+   						<img alt="roll x" src="http://placehold.it/30x30">
+						<span class="status-counter">
+							<span class="part-count">0</span> / 6
+						</span>
+	   				</label>
+	   				<img alt="6 legs" src="http://placehold.it/100x100>">
+	   			</div>
+	   		</div>
+   		</div>
+   	</div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+   	<script src="js/beetle.js"></script>
+</body>
+</html>

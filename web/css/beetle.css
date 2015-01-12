@@ -1,0 +1,50 @@
+body{
+	margin: auto;
+}
+
+.player {
+	padding: 2% 3%;
+}
+
+#content-container {
+	margin: 1%;
+}
+
+#player1, #parts1 {
+	background-color: #CC99CC;
+}
+#player2, #parts2 {
+	background-color: #336633;
+}
+
+#play, #play-status {
+	//margin: 1%;
+}
+
+.thumbnail {
+	padding: 3%;
+}
+.thumbnail img {
+	height: 100px;
+	width: 100px;
+	padding: 1px;
+	background-color: #111111;
+}
+
+.part-label {
+	height: 15%;
+	//font-size: 90%;
+	margin-left: 2%;
+	display: block;
+}
+.part-label img {
+	float:right;
+	margin-right: 2%;
+	height: 20px;
+	width: 20px;
+}
+
+.status-counter{
+	float: right;
+	margin-right: 2%;
+}
