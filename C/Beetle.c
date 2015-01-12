@@ -594,29 +594,4 @@ HBITMAP	hBitmap;
 return 0L;
 }
 
-/* CRAP follows */
-/*		if ((hWnd == hPic1) || (hWnd == hPic2))
-		ValidateRect(hWnd,NULL);
-*/
-/*		GetWindowWord(hWnd,GWW_HINSTANCE);*/
-/*		hDC = BeginPaint(hWnd,&ps);
-		hBitmap = LoadBitmap(hInst, bmDice[Throw1 - 1]);
-		
-		GetClientRect(hWnd,&rect);
-		GetWindowText(hWnd,szText, sizeof szText);
-
-		hBrush = CreateSolidBrush(GetSysColor(COLOR_WINDOW));
-		hBrush = SelectObject(hDC, hBrush);
-		SetBkColor(hDC, GetSysColor(COLOR_WINDOW));
-		SetTextColor(hDC,GetSysColor(COLOR_WINDOWTEXT));
-
-		Rectangle(hDC,0,0,rect.right,rect.bottom);	
-		DrawText(hDC,szText, -1, &rect,
-			DT_SINGLELINE|DT_CENTER|DT_VCENTER);
-
-		DeleteObject(SelectObject(hDC,hBrush));
-		DeleteObject(hBitmap);
-		
-		EndPaint(hWnd,&ps);
-		break;
-*/
+/* EOF */
