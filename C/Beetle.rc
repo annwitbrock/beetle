@@ -1,0 +1,27 @@
+//Beetle resources
+#include <afxres.h>
+
+//AFX_IDI_STD_FRAME_ICON Beetle.ico
+
+BLEGS1 BITMAP "bmp/blegs1.bmp"
+HEAD1 BITMAP "bmp/head1.bmp"
+EYES1 BITMAP "bmp/mouth1.bmp"
+ANTENN1 BITMAP "bmp/antenn1.bmp"
+LEGS1 BITMAP "bmp/legs1.bmp"
+BODY1 BITMAP "bmp/body1.bmp"
+
+BLEGS2 BITMAP "bmp/blegs2.bmp"
+HEAD2 BITMAP "bmp/head2.bmp"
+EYES2 BITMAP "bmp/eyes2.bmp"
+MOUTH2 BITMAP "bmp/mouth2.bmp"
+ANTENN2 BITMAP "bmp/antenn2.bmp"
+LEGS2 BITMAP "bmp/legs2.bmp"
+BODY2 BITMAP "bmp/body2.bmp"
+
+DICE1 BITMAP "bmp/dice1.bmp"
+DICE2 BITMAP "bmp/dice2.bmp"
+DICE3 BITMAP "bmp/dice3.bmp"
+DICE4 BITMAP "bmp/dice4.bmp"
+DICE5 BITMAP "bmp/dice5.bmp"
+DICE6 BITMAP "bmp/dice6.bmp"
+DICEBACK BITMAP "bmp/diceback.bmp"
