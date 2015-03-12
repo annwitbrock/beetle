@@ -26,13 +26,18 @@ You'd need to close and start again when the game is over, or let the loser see 
 
 ### C Code notes:
 
-This is very old code for me, but it shows many aspects of a small windows game. It won't be possible to compile it, as the resource files are long gone, but the main code is in `/C/beetle.c`
+This is very old code for me, but it shows many aspects of a small windows game.
+I thought it wouldn't be possible to compile it, as the resource files are long gone,
+but I managed to recreate the images by using a screenshot of it executing 
+(yes the original .exe still runs on Win 7 32 bit), and then created a project in visual studio 2010 which allows it to build and execute.
+
+The main code is in `/C/beetle.c`
 It was written in plain Windows 95 code, in C, without the luxury of a visual coding environment.
 I learnt most of this from Charles Petzold's book on Programming Windows 95.
 I apologise for not documenting how to compile it (with its assets). 
 
-This might not have been the most recent version.
-There are a few bugs, but I don't have the resource files to fix. 
+This turns out not have been the most recent version as border repaints are incorrect. The present version doesn't paint or handle the dice properly.
+There are a few original bugs which I may or may not find the will to fix. 
 i.e. 
 1) The text in the boxes doesn't reposition properly on resize,
 2) The legs dont get properly masked by the body,
