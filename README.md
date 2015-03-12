@@ -22,8 +22,8 @@ Any turn continues until a dice roll cannot get a valid available part.
 The first player lucky enough to get all the parts out of the box and onto the bug wins.
 
 
-To play, you would just click on the beetle.exe icon.
-You'd need to close and start again when the game is over, or let the loser see how long it "would have taken" to catch up (as live games often go!)
+To play, you just click on the beetle.exe icon.
+You need to close and start again when the game is over, or you can let the loser see how long it "would have taken" to catch up (as live games often go!)
 
 (The game ran on Windows 3.1 and 95 and NT and XP, but wasn't tested on Windows 98, 2000, 7 or 8). The original image assets have been lost.
 
@@ -37,15 +37,18 @@ but I managed to recreate the images by using a screenshot of it executing
 
 The main code is in `/C/beetle.c`
 It was written in plain Windows 95 code, in C, without the luxury of a visual coding environment.
-I learnt most of this from Charles Petzold's book on Programming Windows 95.
+I learnt most of this from Charles Petzold's book on Programming Windows 95. Jeff Prosise book 'Programming Windows 95 with MFC' was useful to get it compiling again (along with [Win API reference](http://winapi.freetechsecrets.com/win32/) ).
 I apologise for not documenting how to compile it (with its assets). 
 
-This turns out not have been the most recent version as border repaints are incorrect. The present version doesn't paint or handle the dice properly.
+This turns out not have been the most recent version.
+- [ ] border repaints are incorrect.
+- [ ] doesn't paint or handle the dice properly.
+
 There are a few original bugs which I may or may not find the will to fix. 
 i.e. 
-1) The text in the boxes doesn't reposition properly on resize,
-2) The legs dont get properly masked by the body,
-3) The parts don't fit perfectly into place in the composite image (they are close).
+- [ ] The text in the boxes doesn't reposition properly on resize,
+- [ ] The legs dont get properly masked by the body,
+- [ ] The parts don't fit perfectly into place in the composite image (they are close).
 The main reason I didn't fix the bugs at the time was that my monitor failed and I couldn't replace it.
 
 Given reason to rewrite it, I would highlight the dice for the current player's turn, rather than relying on the beep for turn finish. I would make the game replayable.
