@@ -7,6 +7,10 @@
 
    ```This game, which I first programmed in C in 1995 in order to learn "Windows" programming, is aimed at children who just want to see who wins. It is based on a popular chance game.```
 
+![Beetle game start screenshot](/screenshots/beetle-start.bmp)
+...
+![Beetle game over screenshot](/screenshots/beetle-end.bmp)
+
 Two players take turns to see what their dice roll is:
 
 
