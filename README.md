@@ -2,7 +2,7 @@
 
 ## Beetle Game    
 
-### - author Ann Witbrock 1995 (copyright)
+### Author: Ann Witbrock 1995 (copyright)
 
 
    ```This game, which I first programmed in C in 1995 in order to learn "Windows" programming, is aimed at children who just want to see who wins. It is based on a popular chance game.```
