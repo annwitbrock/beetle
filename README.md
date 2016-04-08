@@ -43,8 +43,8 @@ I apologise for not documenting how to compile it (with its assets).
 This turns out not have been the most recent version.
 - [ ] Border repaints are incorrect,
 - [ ] Doesn't paint or handle the dice properly,
-- [ ] Some of the parts use the wrong bitmaps,
-- [ ] Status text isn't displaying.
+- [x] Some of the parts use the wrong bitmaps,
+- [x] Status text isn't displaying.
 
 There are a few original bugs which I may or may not find the will to fix. 
 i.e. 
