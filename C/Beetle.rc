@@ -5,7 +5,8 @@
 
 BLEGS1 BITMAP "bmp/blegs1.bmp"
 HEAD1 BITMAP "bmp/head1.bmp"
-EYES1 BITMAP "bmp/mouth1.bmp"
+EYES1 BITMAP "bmp/eyes1.bmp"
+MOUTH1 BITMAP "bmp/mouth1.bmp"
 ANTENN1 BITMAP "bmp/antenn1.bmp"
 LEGS1 BITMAP "bmp/legs1.bmp"
 BODY1 BITMAP "bmp/body1.bmp"

@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdarg.h>
 
 /* define the window style */
 #define WS_ANNWINSTYLE 	WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | \
@@ -32,9 +33,9 @@
 
 /* declare procedures */
 
-long FAR PASCAL WndProc(HWND, unsigned, WORD, LONG);
-long FAR PASCAL ChildWndProc(HWND, unsigned, WORD, LONG);
-long FAR PASCAL DicePushWndProc(HWND, unsigned, WORD, LONG);
+long FAR PASCAL WndProc(HWND, unsigned, WPARAM, LPARAM);//HWND, unsigned, WORD, LONG
+long FAR PASCAL ChildWndProc(HWND, unsigned, WPARAM, LPARAM);//HWND, unsigned, WORD, LONG
+long FAR PASCAL DicePushWndProc(HWND, unsigned, WPARAM, LPARAM);//HWND, unsigned, WORD, LONG
 void newgame();
 
 /* define and initialise array of info on each player's game */
@@ -42,25 +43,26 @@ void newgame();
 #define NPLAYS 2
 
 struct Play{
-short  Throw;
-int    Cnt[7];
-int    BCnt[7];
-char   *bmParts[7];
-HWND   hPlayer[7]; 
-HWND   hDice, hPic;
+  short  Throw;
+  int    Cnt[7];
+  int    BCnt[7];
+  char   *bmParts[7];
+  HWND   hPlayer[7]; 
+  HWND   hDice;
+  HWND   hPic;
 } Player[2] = {
-{1,
-{0,1,2,1,2,6,1},
-{0,0,0,0,0,0,0},
-{"BLEGS1","HEAD1","EYES1","MOUTH1","ANTENN1","LEGS1","BODY1"},
-{NULL,NULL,NULL,NULL,NULL,NULL,NULL},
-NULL,NULL},
-{1,
-{0,1,2,1,2,6,1},
-{0,0,0,0,0,0,0},
-{"BLEGS2","HEAD2","EYES2","MOUTH2","ANTENN2","LEGS2","BODY2"},
-{NULL,NULL,NULL,NULL,NULL,NULL,NULL},
-NULL,NULL}
+    {1,
+    {0,1,2,1,2,6,1},
+    {0,0,0,0,0,0,0},
+    {"BLEGS1","HEAD1","EYES1","MOUTH1","ANTENN1","LEGS1","BODY1"},
+    {NULL,NULL,NULL,NULL,NULL,NULL,NULL},
+    NULL,NULL},
+    {1,
+    {0,1,2,1,2,6,1},
+    {0,0,0,0,0,0,0},
+    {"BLEGS2","HEAD2","EYES2","MOUTH2","ANTENN2","LEGS2","BODY2"},
+    {NULL,NULL,NULL,NULL,NULL,NULL,NULL},
+    NULL,NULL}
 };
 
 /* global variable declarations and initialisation */
@@ -72,19 +74,20 @@ char szDiceBtnClass [] = "Dice_Button";
 char *bmDice[]         = {"DICE1","DICE2","DICE3","DICE4","DICE5","DICE6"};
 char *bmDiceBack       = "DICEBACK";
 
-HANDLE hInst;
+HINSTANCE hInst; //HANDLE
 
 /****************************
 *
 * WINMAIN
 *
 ****************************/
-int PASCAL WinMain( hInstance, hPrevInstance, lpszCmdLine, nCmdShow)
-    HANDLE hInstance, hPrevInstance;
-    LPSTR  lpszCmdLine;
-    int    nCmdShow;
+int PASCAL WinMain( 
+    HINSTANCE hInstance,     //HANDLE
+    HINSTANCE hPrevInstance, //HANDLE
+    LPSTR lpszCmdLine, 
+    int nCmdShow)
 {
-    static char szAppName [] = "beetle";
+    static char szClassName [] = "beetle";
     HWND hWnd;
     MSG  msg;
     WNDCLASS wndclass;
@@ -97,11 +100,11 @@ int PASCAL WinMain( hInstance, hPrevInstance, lpszCmdLine, nCmdShow)
     wndclass.cbClsExtra     = 0;
     wndclass.cbWndExtra     = 0;
     wndclass.hInstance      = hInstance;
-    wndclass.hIcon          = LoadIcon(NULL, szAppName);
+    wndclass.hIcon          = LoadIcon(NULL, szClassName);
     wndclass.hCursor        = LoadCursor(NULL, IDC_ARROW);
-    wndclass.hbrBackground  = GetStockObject(WHITE_BRUSH);
+    wndclass.hbrBackground  = (HBRUSH)GetStockObject(WHITE_BRUSH);
     wndclass.lpszMenuName   = NULL;
-    wndclass.lpszClassName  = szAppName;
+    wndclass.lpszClassName  = szClassName;
 
     if(!RegisterClass(&wndclass))
         return FALSE;
@@ -126,18 +129,16 @@ int PASCAL WinMain( hInstance, hPrevInstance, lpszCmdLine, nCmdShow)
     if(!RegisterClass(&wndclass))
         return FALSE;
 
-
-
     /* (Main) Window Creation */
 
     /* MAIN Window */
     hWnd = CreateWindow (
-        szAppName,            /* w class name */
-        "BEETLE",             /* w caption */
+        szClassName,          /* w class name */
+        "BEETLE",             /* w app name */
         WS_ANNWINSTYLE,       /* w style (def above) */
         0,                    /* init x pos */
         0,                    /* init y pos */
-        2 * X_POS + BEETLE_MARGIN,          /* init xsize */
+        2 * X_POS + BEETLE_MARGIN,          /* init x size */
         W_BEETLE_YSIZE + 2 * BEETLE_MARGIN, /* init y size */
         NULL,                 /* parent w handle */
         NULL,                 /* w menu handle */
@@ -158,6 +159,7 @@ int PASCAL WinMain( hInstance, hPrevInstance, lpszCmdLine, nCmdShow)
     }
     return msg.wParam;
 }
+
 
 /*
 *  NEWGAME : Initialises global: nTurn; and 
@@ -196,54 +198,61 @@ void newgame()
     srand(LOWORD(GetCurrentTime()));
 }
 
-
 /*
 *    OKMSGBOX
 */
-void OkMsgBox(szCaption, szFormat)
-    char *szCaption, *szFormat;
+void OkMsgBox(
+    char *caption, 
+    const char *format, ...)
 {
-    char szBuffer[256];
-    char *pArgs;
+    va_list args;
+    char message[16];
+    va_start(args, format);
+    vsprintf_s(message, sizeof message, format, args);
+    va_end(args);
 
-    pArgs = (char *) &szFormat + sizeof szFormat;
-    vsprintf(szBuffer, szFormat, pArgs);
-    MessageBox(NULL, szBuffer, szCaption, MB_OK);
+    MessageBox(NULL, message, caption, MB_OK);
 }
-
 
 /*
 *    DRAWTEXTBOX
 */
-void DrawTextBox(hWnd, xStart,yStart, szFormat)
-    HWND hWnd;
-    short xStart, yStart;
-    char *szFormat;
+void DrawTextBox(
+    HWND hWnd,
+    short xStart, 
+    short yStart,
+    const char *format, ...)
 {
-    char szBuffer[256];
-    char *pArgs;
+    va_list args;
     HDC  hDC;
 
-    pArgs = (char *) &szFormat + sizeof szFormat;
+    char message[16];
+    char* ptr;
+    int length = sizeof message;
+
+    va_start(args, format);
+    vsprintf_s(message, sizeof message, format, args);
+    va_end(args);
+    if((ptr = strchr(message, '\0')) != NULL){
+        length = ptr - message; 
+    }
 
     hDC = GetDC(hWnd);
-
-    TextOut(hDC, xStart, yStart, szBuffer, 
-            vsprintf(szBuffer, szFormat, pArgs));
+    TextOut(hDC, (int)xStart, (int)yStart, message, length);
 
     ReleaseDC(hWnd, hDC);
     ValidateRect(hWnd, NULL);
 }
 
-
 /*
 *    DRAWBITMAP
 */
-void DrawBitmap(hDC, xStart, yStart, bmID, dwROP)
-    HDC   hDC;
-    short xStart, yStart;
-    char  *bmID;
-    DWORD dwROP;
+void DrawBitmap(
+    HDC   hDC,
+    short xStart, 
+    short yStart,
+    char  *bmID,
+    DWORD dwROP)
 {
     BITMAP      bm;
     HDC         hMemDC;
@@ -255,7 +264,7 @@ void DrawBitmap(hDC, xStart, yStart, bmID, dwROP)
     hBitmap = LoadBitmap(hInst, bmID);
 
     hMemDC = CreateCompatibleDC(hDC);
-    SelectObject(hMemDC,hBitmap);
+    SelectObject(hMemDC, hBitmap);
     SetMapMode(hMemDC, GetMapMode (hDC));
 
     GetObject(hBitmap, sizeof (BITMAP), (LPSTR) &bm);
@@ -273,11 +282,11 @@ void DrawBitmap(hDC, xStart, yStart, bmID, dwROP)
 /*
 *    WNDPROC
 */
-long FAR PASCAL WndProc(hWnd, iMessage, wParam, lParam)
-    HWND     hWnd;
-    unsigned iMessage;
-    WORD     wParam;
-    LONG     lParam;
+long FAR PASCAL WndProc(
+    HWND     hWnd,
+    unsigned iMessage,
+    WPARAM     wParam,
+    LPARAM     lParam )
 {
     short xBlock, yBlock, x, y, index;
     int toss, i;
@@ -378,7 +387,7 @@ long FAR PASCAL WndProc(hWnd, iMessage, wParam, lParam)
         break;
 
     case WM_COMMAND:
-        toss = rand()%6 + 1;
+        toss = (rand() % 6) + 1;
         if (LOWORD(lParam) != Player[nTurn].hDice)
             MessageBeep(0);
         else 
@@ -401,7 +410,7 @@ long FAR PASCAL WndProc(hWnd, iMessage, wParam, lParam)
                 nTurn = (nTurn + 1) % NPLAYS;
                 break;
             case 1:
-                if ((	Player[index].Cnt[6] < 1) && 
+                if ((Player[index].Cnt[6] < 1) && 
                     (Player[index].Cnt[1] > 0))
                 {
                     Player[index].Cnt[1]-- ;
@@ -429,7 +438,9 @@ long FAR PASCAL WndProc(hWnd, iMessage, wParam, lParam)
 
             for(i = 2; ((Player[index].Cnt[i] < 1) && (i < 6)); i++);
             if (i >= 6)
+            {
                 OkMsgBox( "Winner", "Player %d", index + 1);
+            }
         }
         break;
 
@@ -450,13 +461,13 @@ return 0L;
 /*
 *    CHILDWNDPROC
 */
-long FAR PASCAL ChildWndProc(hWnd, iMessage, wParam, lParam)
-    HWND     hWnd;
-    unsigned iMessage;
-    WORD     wParam;
-    LONG     lParam;
+long FAR PASCAL ChildWndProc(
+    HWND hWnd, 
+    unsigned iMessage, 
+    WPARAM wParam, 
+    LPARAM lParam)
 {
-    short       i, j,xpos, ypos, index;
+    short       i, j, xpos, ypos, index;
     HDC         hDC;
     PAINTSTRUCT ps;
     RECT        rect;
@@ -477,16 +488,20 @@ long FAR PASCAL ChildWndProc(hWnd, iMessage, wParam, lParam)
             if (hWnd == Player[0].hPlayer[i])
             {
                 for (j = 1; j <= Player[0].Cnt[i]; j++)
-                    DrawBitmap(hDC,((j - 1) * 10) + 5, 5, Player[0].bmParts[i], SRCAND);
-                DrawTextBox(hWnd, 5, 40, "%d :%d", i, Player[0].Cnt[i]);
+                    DrawBitmap(hDC, ((j - 1) * 10) + 5, 5, Player[0].bmParts[i], SRCAND);
+
+                DrawTextBox(hWnd, 5, 40, "%d : %d", i, Player[0].Cnt[i]);
+
                 EndPaint(hWnd, &ps);
                 break;
             }
             if (hWnd == Player[1].hPlayer[i])
             {
                 for (j = 1; j <= Player[1].Cnt[i]; j++)
-                    DrawBitmap(hDC,((j -1) * 10) + 5, 5, Player[1].bmParts[i], SRCAND);
-                DrawTextBox(hWnd, 5, 40, "%d :%d", i, Player[1].Cnt[i]);
+                    DrawBitmap(hDC, ((j - 1) * 10) + 5, 5, Player[1].bmParts[i], SRCAND);
+
+                DrawTextBox(hWnd, 5, 40, "%d : %d", i, Player[1].Cnt[i]);
+
                 EndPaint(hWnd, &ps);
                 break;
             }
@@ -536,7 +551,6 @@ long FAR PASCAL ChildWndProc(hWnd, iMessage, wParam, lParam)
                     DrawBitmap(hDC, 75 - (j * 2) , 38 + (j * 5), Player[index].bmParts[4], SRCAND);
             }
 
-
             DrawTextBox(Player[index].hPic, 10, 120, 
                 "%d %d %d %d %d %d", 
                 Player[index].BCnt[1], Player[index].BCnt[2],
@@ -554,15 +568,14 @@ long FAR PASCAL ChildWndProc(hWnd, iMessage, wParam, lParam)
 return 0L;
 }
 
-
 /*
 *    DICEPUSHWNDPROC
 */
-long FAR PASCAL DicePushWndProc(hWnd, iMessage, wParam, lParam)
-    HWND     hWnd;
-    unsigned iMessage;
-    WORD     wParam;
-    LONG     lParam;
+long FAR PASCAL DicePushWndProc(
+	HWND hWnd, 
+	unsigned iMessage, 
+	WPARAM wParam, 
+	LPARAM lParam)
 {
     char    szText[7];
     HBRUSH  hBrush;
@@ -591,5 +604,6 @@ long FAR PASCAL DicePushWndProc(hWnd, iMessage, wParam, lParam)
     }
 return 0L;
 }
+
 
 /* EOF */
