@@ -5,11 +5,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include "beetle.h"
 
 /* define the window style */
 #define WS_ANNWINSTYLE 	WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | \
         WS_THICKFRAME | WS_MINIMIZEBOX
-
 
 #define WS_ANNCHILDSTYLE 	WS_CHILD | WS_VISIBLE
 
@@ -21,7 +21,6 @@
 #define BEETLE_MARGIN (DICE_SIZE + 20)
 #define X_POS (W_BEETLE_XSIZE + BEETLE_MARGIN)
 
-
 /* make a brush colour (for backgrounds) */
 #define PINK_BRUSH      RGB(255,193,255)
 #define BLUE_BRUSH      RGB(0,0,255)
@@ -30,13 +29,6 @@
 #define YELLOW_BRUSH    RGB(255,255,0)
 #define MAGENTA_BRUSH   RGB(255,0,255)
 #define CYAN_BRUSH      RGB(0,255,255)
-
-/* declare procedures */
-
-long FAR PASCAL WndProc(HWND, unsigned, WPARAM, LPARAM);//HWND, unsigned, WORD, LONG
-long FAR PASCAL ChildWndProc(HWND, unsigned, WPARAM, LPARAM);//HWND, unsigned, WORD, LONG
-long FAR PASCAL DicePushWndProc(HWND, unsigned, WPARAM, LPARAM);//HWND, unsigned, WORD, LONG
-void newgame();
 
 /* define and initialise array of info on each player's game */
 
@@ -76,89 +68,6 @@ char *bmDiceBack       = "DICEBACK";
 
 HINSTANCE hInst; //HANDLE
 
-/****************************
-*
-* WINMAIN
-*
-****************************/
-int PASCAL WinMain( 
-    HINSTANCE hInstance,     //HANDLE
-    HINSTANCE hPrevInstance, //HANDLE
-    LPSTR lpszCmdLine, 
-    int nCmdShow)
-{
-    static char szClassName [] = "beetle";
-    HWND hWnd;
-    MSG  msg;
-    WNDCLASS wndclass;
-
-    if (hPrevInstance) return FALSE;
-
-    /* parent window */
-    wndclass.style          = CS_HREDRAW | CS_VREDRAW;
-    wndclass.lpfnWndProc    = WndProc;
-    wndclass.cbClsExtra     = 0;
-    wndclass.cbWndExtra     = 0;
-    wndclass.hInstance      = hInstance;
-    wndclass.hIcon          = LoadIcon(NULL, szClassName);
-    wndclass.hCursor        = LoadCursor(NULL, IDC_ARROW);
-    wndclass.hbrBackground  = (HBRUSH)GetStockObject(WHITE_BRUSH);
-    wndclass.lpszMenuName   = NULL;
-    wndclass.lpszClassName  = szClassName;
-
-    if(!RegisterClass(&wndclass))
-        return FALSE;
-
-    hInst = hInstance;
-
-    /* child window */
-    wndclass.lpfnWndProc   = ChildWndProc;
-    wndclass.cbWndExtra    = 0;
-    wndclass.hIcon         = NULL;
-    wndclass.lpszClassName = szChildClass;
-
-    if(!RegisterClass(&wndclass))
-        return FALSE;
-
-    /* button */
-    wndclass.lpfnWndProc   = DicePushWndProc;
-    wndclass.cbWndExtra    = 0;
-    wndclass.hIcon         = NULL;
-    wndclass.lpszClassName = szDiceBtnClass;
-
-    if(!RegisterClass(&wndclass))
-        return FALSE;
-
-    /* (Main) Window Creation */
-
-    /* MAIN Window */
-    hWnd = CreateWindow (
-        szClassName,          /* w class name */
-        "BEETLE",             /* w app name */
-        WS_ANNWINSTYLE,       /* w style (def above) */
-        0,                    /* init x pos */
-        0,                    /* init y pos */
-        2 * X_POS + BEETLE_MARGIN,          /* init x size */
-        W_BEETLE_YSIZE + 2 * BEETLE_MARGIN, /* init y size */
-        NULL,                 /* parent w handle */
-        NULL,                 /* w menu handle */
-        hInstance,            /* prog inst handle */
-        NULL);                /* create params */
-
-    /* initialise a single game (for all players) */
-    newgame();
-
-    ShowWindow(hWnd, nCmdShow);
-    UpdateWindow(hWnd);
-
-
-    while(GetMessage(&msg, NULL, 0, 0))
-    {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
-    return msg.wParam;
-}
 
 
 /*
@@ -605,5 +514,88 @@ long FAR PASCAL DicePushWndProc(
 return 0L;
 }
 
+/****************************
+*
+* WINMAIN
+*
+****************************/
+int PASCAL WinMain( 
+    HINSTANCE hInstance,     //HANDLE
+    HINSTANCE hPrevInstance, //HANDLE
+    LPSTR lpszCmdLine, 
+    int nCmdShow)
+{
+    static char szClassName [] = "beetle";
+    HWND hWnd;
+    MSG  msg;
+    WNDCLASS wndclass;
+
+    if (hPrevInstance) return FALSE;
+
+    /* parent window */
+    wndclass.style          = CS_HREDRAW | CS_VREDRAW;
+    wndclass.lpfnWndProc    = WndProc;
+    wndclass.cbClsExtra     = 0;
+    wndclass.cbWndExtra     = 0;
+    wndclass.hInstance      = hInstance;
+    wndclass.hIcon          = LoadIcon(NULL, szClassName);
+    wndclass.hCursor        = LoadCursor(NULL, IDC_ARROW);
+    wndclass.hbrBackground  = (HBRUSH)GetStockObject(WHITE_BRUSH);
+    wndclass.lpszMenuName   = NULL;
+    wndclass.lpszClassName  = szClassName;
+
+    if(!RegisterClass(&wndclass))
+        return FALSE;
+
+    hInst = hInstance;
+
+    /* child window */
+    wndclass.lpfnWndProc   = ChildWndProc;
+    wndclass.cbWndExtra    = 0;
+    wndclass.hIcon         = NULL;
+    wndclass.lpszClassName = szChildClass;
+
+    if(!RegisterClass(&wndclass))
+        return FALSE;
+
+    /* button */
+    wndclass.lpfnWndProc   = DicePushWndProc;
+    wndclass.cbWndExtra    = 0;
+    wndclass.hIcon         = NULL;
+    wndclass.lpszClassName = szDiceBtnClass;
+
+    if(!RegisterClass(&wndclass))
+        return FALSE;
+
+    /* (Main) Window Creation */
+
+    /* MAIN Window */
+    hWnd = CreateWindow (
+        szClassName,          /* w class name */
+        "BEETLE",             /* w app name */
+        WS_ANNWINSTYLE,       /* w style (def above) */
+        0,                    /* init x pos */
+        0,                    /* init y pos */
+        2 * X_POS + BEETLE_MARGIN,          /* init x size */
+        W_BEETLE_YSIZE + 2 * BEETLE_MARGIN, /* init y size */
+        NULL,                 /* parent w handle */
+        NULL,                 /* w menu handle */
+        hInstance,            /* prog inst handle */
+        NULL);                /* create params */
+
+    /* initialise a single game (for all players) */
+    newgame();
+
+    ShowWindow(hWnd, nCmdShow);
+    UpdateWindow(hWnd);
+
+
+    while(GetMessage(&msg, NULL, 0, 0))
+    {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+    return msg.wParam;
+}
 
 /* EOF */
