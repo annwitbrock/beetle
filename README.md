@@ -2,7 +2,7 @@
 
 ## Beetle Game    
 
-### Author: Ann Witbrock 1995 (copyright)
+### Author: Ann Witbrock 1995 - 2016 (copyright)
 
 
    ```This game, which I first programmed in C in 1995 in order to learn "Windows" programming, is aimed at children who just want to see who wins. It is based on a popular chance game.```
@@ -32,7 +32,7 @@ You need to close and start again when the game is over, or you can let the lose
 
 This is very old code for me, but it shows many aspects of a small windows game.
 I thought it wouldn't be possible to compile it, as the resource files are long gone,
-but I managed to recreate the images by using a screenshot of it executing 
+but I managed to recreate the images by using a screen-shot of it executing 
 (yes the original .exe still runs on Win 7 32 bit), and then created a project in visual studio 2010 which allows it to build and execute.
 
 The main code is in `/C/beetle.c`
@@ -41,17 +41,19 @@ I learnt most of this from Charles Petzold's book on Programming Windows 95. Jef
 I apologise for not documenting how to compile it (with its assets). 
 
 This turns out not have been the most recent version.
-- [ ] border repaints are incorrect.
-- [ ] doesn't paint or handle the dice properly.
+- [ ] Border repaints are incorrect,
+- [ ] Doesn't paint or handle the dice properly,
+- [ ] Some of the parts use the wrong bitmaps,
+- [ ] Status text isn't displaying.
 
 There are a few original bugs which I may or may not find the will to fix. 
 i.e. 
 - [ ] The text in the boxes doesn't reposition properly on resize,
-- [ ] The legs dont get properly masked by the body,
+- [ ] The legs don't get properly masked by the body,
 - [ ] The parts don't fit perfectly into place in the composite image (they are close).
 The main reason I didn't fix the bugs at the time was that my monitor failed and I couldn't replace it.
 
-Given reason to rewrite it, I would highlight the dice for the current player's turn, rather than relying on the beep for turn finish. I would make the game replayable.
+Given reason to rewrite it, I would highlight the dice for the current player's turn, rather than relying on the beep for turn finish. I would make the game re-playable.
 
 
 ### New Beetle for web (20 years later - 2015)
