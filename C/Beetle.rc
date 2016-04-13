@@ -2,6 +2,7 @@
 #include <afxres.h>
 
 //AFX_IDI_STD_FRAME_ICON Beetle.ico
+B_ICON ICON "beetle.ico"
 
 BLEGS1 BITMAP "bmp/blegs1.bmp"
 HEAD1 BITMAP "bmp/head1.bmp"
