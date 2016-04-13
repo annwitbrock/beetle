@@ -4,7 +4,6 @@
 #include <windows.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdarg.h>
 #include "beetle.h"
 
 /* define the window style */
@@ -82,7 +81,7 @@ void newgame()
     nTurn = 0;                /* Player 1 to start */
     for(i = 0; i <= 1; i++)
     {
-        Player[i].Throw = 1;  /* anything but 6 ! */
+        Player[i].Throw = 1;    /* anything but 6 ! */
 
 /* What's left to get */
         Player[i].Cnt[0] = 0;
@@ -167,8 +166,8 @@ void DrawBitmap(
     HDC         hMemDC;
     POINT       pt;
     HBITMAP     hBitmap;
-    PAINTSTRUCT ps;
-    RECT        rect;
+//    PAINTSTRUCT ps;
+//    RECT        rect;
 
     hBitmap = LoadBitmap(hInst, bmID);
 
@@ -197,8 +196,8 @@ long FAR PASCAL WndProc(
     WPARAM     wParam,
     LPARAM     lParam )
 {
-    short xBlock, yBlock, x, y, index;
-    int toss, i;
+    short xBlock = 0, yBlock = 0, x= 0, y = 0, index = 0;
+    int toss = 0, i = 0;
 
     switch (iMessage)
     {
@@ -214,7 +213,7 @@ long FAR PASCAL WndProc(
                     WS_ANNCHILDSTYLE,
                     x * xBlock, (2 + y) * yBlock,
                     xBlock, yBlock,
-                    hWnd, y * 3 + x + 1,
+                    hWnd, NULL, //y * 3 + x + 1,
                     hInst, NULL);
 
                 Player[1].hPlayer[(y * 3) + x + 1] = CreateWindow
@@ -223,7 +222,7 @@ long FAR PASCAL WndProc(
                     (4 + x) * xBlock,
                     (2 + y) * yBlock,
                     xBlock, yBlock,
-                    hWnd, y * 3 + x + 9,
+                    hWnd, NULL, //y * 3 + x + 9,
                     hInst, NULL);
             }
         Player[0].hDice = CreateWindow
@@ -231,7 +230,7 @@ long FAR PASCAL WndProc(
                 WS_ANNCHILDSTYLE | BS_PUSHBUTTON,
                 2 * xBlock + (xBlock - DICE_SIZE) / 2, yBlock - DICE_SIZE / 2,
                 DICE_SIZE, DICE_SIZE,
-                hWnd, 7 ,
+                hWnd, NULL, //7 ,
                 hInst, NULL);
 
         Player[1].hDice = CreateWindow
@@ -239,7 +238,7 @@ long FAR PASCAL WndProc(
                 WS_ANNCHILDSTYLE | BS_PUSHBUTTON,
                 4 * xBlock + (xBlock - DICE_SIZE) / 2, yBlock - DICE_SIZE / 2,
                 DICE_SIZE, DICE_SIZE,
-                hWnd, 15 ,
+                hWnd, NULL, //15 ,
                 hInst, NULL);
 
 
@@ -248,7 +247,7 @@ long FAR PASCAL WndProc(
                 WS_ANNCHILDSTYLE,
                 0, 0,
                 2 * xBlock, 2 * yBlock,
-                hWnd, 8 ,
+                hWnd, NULL, //8 ,
                 hInst, NULL);
 
         Player[1].hPic = CreateWindow
@@ -256,7 +255,7 @@ long FAR PASCAL WndProc(
                 WS_ANNCHILDSTYLE,
                 5 * xBlock, 0,
                 2 * xBlock, 2 * yBlock,
-                hWnd, 16,
+                hWnd, NULL, //16,
                 hInst, NULL);
 
         break;
@@ -297,7 +296,7 @@ long FAR PASCAL WndProc(
 
     case WM_COMMAND:
         toss = (rand() % 6) + 1;
-        if (LOWORD(lParam) != Player[nTurn].hDice)
+        if ((HANDLE *)lParam != (HANDLE *)Player[nTurn].hDice) // rolling out of turn
             MessageBeep(0);
         else 
         {
@@ -376,7 +375,8 @@ long FAR PASCAL ChildWndProc(
     WPARAM wParam, 
     LPARAM lParam)
 {
-    short       i, j, xpos, ypos, index;
+    short       i, j, index;
+//	short		xpos, ypos;
     HDC         hDC;
     PAINTSTRUCT ps;
     RECT        rect;
@@ -417,7 +417,7 @@ long FAR PASCAL ChildWndProc(
         }
         for (index = 0; 
             ((hWnd != Player[index].hPic) && (index <= NPLAYS));
-            index++); //BUG ?
+            index++); //BUG ? Is this just to find the index of the window?
 
         if (hWnd == Player[index].hPic)
         {
@@ -486,19 +486,20 @@ long FAR PASCAL DicePushWndProc(
 	WPARAM wParam, 
 	LPARAM lParam)
 {
-    char    szText[7];
-    HBRUSH  hBrush;
+//    char    szText[7];
+//    HBRUSH  hBrush;
     HDC     hDC;
     PAINTSTRUCT ps;
-    RECT    rect;
-    HBITMAP hBitmap;
+//    RECT    rect;
+//    HBITMAP hBitmap;
 
     switch (iMessage)
     {
 
     case WM_PAINT:
         hDC = BeginPaint(hWnd, &ps);
-        DrawBitmap(hDC, 0, 0,  (hWnd == Player[0].hDice) ? 
+        DrawBitmap(hDC, 1, 1, bmDiceBack, SRCCOPY);
+		DrawBitmap(hDC, 5, 4,  (hWnd == Player[0].hDice) ? 
             bmDice[Player[0].Throw - 1] : bmDice[Player[1].Throw - 1], SRCCOPY);
         EndPaint(hWnd,&ps);
         break;
@@ -538,7 +539,7 @@ int PASCAL WinMain(
     wndclass.cbClsExtra     = 0;
     wndclass.cbWndExtra     = 0;
     wndclass.hInstance      = hInstance;
-    wndclass.hIcon          = LoadIcon(NULL, szClassName);
+    wndclass.hIcon          = LoadIcon(NULL, "B_ICON");
     wndclass.hCursor        = LoadCursor(NULL, IDC_ARROW);
     wndclass.hbrBackground  = (HBRUSH)GetStockObject(WHITE_BRUSH);
     wndclass.lpszMenuName   = NULL;
