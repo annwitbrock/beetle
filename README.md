@@ -40,9 +40,9 @@ It was written in plain Windows 95 code, in C, without the luxury of a visual co
 I learnt most of this from Charles Petzold's book on Programming Windows 95. Jeff Prosise book 'Programming Windows 95 with MFC' was useful to get it compiling again (along with [Win API reference](http://winapi.freetechsecrets.com/win32/) ).
 I apologise for not documenting how to compile it (with its assets). 
 
-This turns out not have been the most recent version.
-- [ ] Border repaints are incorrect,
-- [ ] Doesn't paint or handle the dice properly,
+This turned out not have been the most recent version, but it now compiles and builds cleanly (in Visual Studio 2010), it runs on Win 7 (Pro) 64 bit machine, and these bugs have been fixed:
+- [x] Border repaints are incorrect,
+- [x] Doesn't paint or handle the dice properly,
 - [x] Some of the parts use the wrong bitmaps,
 - [x] Status text isn't displaying.
 
